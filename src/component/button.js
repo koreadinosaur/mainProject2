@@ -1,9 +1,9 @@
 import React from "react";
 
-const Button = (props) => {
+const Button = ({ buttonName }) => {
   return (
     <>
-      <button>{(props && props.buttonName) || "제출"}</button>
+      <button>{buttonName || "제출"}</button>
     </>
   );
 };
