@@ -1,9 +1,25 @@
 import React from "react";
+import styled from "styled-components";
+const ButtonElement = styled.button`
+  display: inline-block;
+  border: none;
+  border-radius: 0.3rem;
+  background-color: ${(props) => props.bgColor};
+  height: 3rem;
+  color: white;
+  width: ${(props) => props.btnWidth};
 
-const Button = ({ buttonName }) => {
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const Button = ({ buttonName, bgColor, width }) => {
   return (
     <>
-      <button>{buttonName || "제출"}</button>
+      <ButtonElement bgColor={bgColor || "skyblue"} btnWidth={width}>
+        {buttonName || "제출"}
+      </ButtonElement>
     </>
   );
 };

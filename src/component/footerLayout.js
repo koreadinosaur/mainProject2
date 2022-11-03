@@ -1,14 +1,15 @@
 import React from "react";
 import styled from "styled-components";
 const FooterContainer = styled.footer`
-  width: 100%;
+  width: ${(props) => props.width};
+  margin: auto;
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: space-around;
 `;
 
-const Footer = ({ children }) => {
-  return <FooterContainer>{children}</FooterContainer>;
+const Footer = ({ children, width }) => {
+  return <FooterContainer width={width}>{children}</FooterContainer>;
 };
 
 export default Footer;
