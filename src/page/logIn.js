@@ -1,14 +1,13 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { json, Link, useNavigate } from "react-router-dom";
 import Button from "../component/button";
 import styled from "styled-components";
 import InputLayout from "../component/inputLayout";
 import Header from "../component/header";
-import Footer from "../component/footerLayout";
 import TextInput from "../component/textInput";
 import { useForm } from "react-hook-form";
-
-const HomeContainer = styled.section`
+import axios from "axios";
+const HomeContainer = styled.form`
   height: 60rem;
   width: 30rem;
   margin: auto;
@@ -21,15 +20,40 @@ const ButtonContainer = styled.div`
   width: 100%;
 `;
 
-const Home = ({ user }) => {
+const Home = ({ users }) => {
   const {
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
+  const navigate = useNavigate();
+  const onSubmit = handleSubmit(async (data) => {
+    async function getUser() {
+      try {
+        const response = await axios({
+          method: "get",
+          url: `http://localhost:5000/user?username=${data.username}`,
+        });
+
+        return response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+    const user = await getUser();
+    if (!user) {
+      return alert("아이디를 확인해주세요");
+    } else if (String(user.password) === String(data.password)) {
+      navigate("/myPage", { state: user });
+      return console.log("success");
+    } else {
+      return alert("비밀번호를 확인해주세요");
+    }
+  });
+
   return (
-    <HomeContainer>
+    <HomeContainer onSubmit={onSubmit}>
       <Header title="로그인 페이지" />
       <InputLayout label="아이디 ">
         <TextInput
@@ -53,9 +77,12 @@ const Home = ({ user }) => {
       </InputLayout>
 
       <ButtonContainer>
-        <Link to="/myPage" className="link">
-          <Button buttonName="로그인" bgColor="skyblue" width="100%"></Button>
-        </Link>
+        <Button
+          type="submit"
+          buttonName="로그인"
+          bgColor="skyblue"
+          width="100%"
+        ></Button>
       </ButtonContainer>
       <ButtonContainer>
         <Link to="/signUp" className="link">
@@ -64,6 +91,7 @@ const Home = ({ user }) => {
             bgColor="skyblue"
             width="100%"
             display="block"
+            type="submit"
           ></Button>
         </Link>
       </ButtonContainer>
