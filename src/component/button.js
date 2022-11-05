@@ -14,7 +14,7 @@ const ButtonElement = styled.button`
   }
 `;
 
-const Button = ({ buttonName, bgColor, width, type, onClick }) => {
+const Button = ({ buttonName, bgColor, width, type, onClick, errors }) => {
   return (
     <>
       <ButtonElement
@@ -22,6 +22,7 @@ const Button = ({ buttonName, bgColor, width, type, onClick }) => {
         bgColor={bgColor || "skyblue"}
         btnWidth={width}
         onClick={onClick}
+        {...(errors ? { disabled: true } : {})}
       >
         {buttonName || "제출"}
       </ButtonElement>

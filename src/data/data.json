@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "uuid": 1,
+      "username": "human_001",
+      "password": 1234,
+      "dateOfBirth": { "year": 1999, "month": "07", "date": "07" },
+      "gender": "여자",
+      "email": "human_001@gmail.com",
+      "phone": ["82", "010", "6443", "5123"],
+      "introduction": "ㅎㅇ"
+    },
+    {
+      "uuid": 2,
+      "username": "human_002",
+      "password": 1234,
+      "dateOfBirth": { "year": 1500, "month": "07", "date": "07" },
+      "gender": "남자",
+      "email": "human_001@gmail.com",
+      "phone": ["82", "010", "0000", "0000"],
+      "introduction": "ㅎㅇ"
+    },
+    {
+      "uuid": 3,
+      "username": "human_003",
+      "password": 1234,
+      "dateOfBirth": { "year": 1500, "month": 7, "date": 7 },
+      "gender": "여자",
+      "email": "human_001@gmail.com",
+      "phone": ["82", "010", "0000", "0000"],
+      "introduction": "ㅎㅇ"
+    }
+  ]
+}

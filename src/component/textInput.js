@@ -19,7 +19,7 @@ const TextInput = ({
   label,
   disabledInput,
   validation,
-  errors,
+  onBlur,
 }) => {
   return (
     <InputContainer>
@@ -33,6 +33,7 @@ const TextInput = ({
         {...(disabledInput || (name === "emailHost" && user)
           ? { disabled: true }
           : {})}
+        onBlur={onBlur}
       />
     </InputContainer>
   );
