@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 const Input = styled.input`
   width: ${(props) => props.width};
@@ -8,16 +8,31 @@ const InputContainer = styled.div`
   width: 100%;
 `;
 
-const TextInput = ({ type, width, placeholder, name, user }) => {
-  console.log(user);
+const TextInput = ({
+  type,
+  width,
+  placeholder,
+  name,
+  user,
+  register,
+  required,
+  label,
+  disabledInput,
+  validation,
+  errors,
+}) => {
   return (
     <InputContainer>
       <Input
         type={type || "text"}
         width={width || "100%"}
+        defaultValue={user === "직접입력" ? "" : user}
         placeholder={placeholder}
-        defaultValue={user}
         className={name}
+        {...register(label, validation || required)}
+        {...(disabledInput || (name === "emailHost" && user)
+          ? { disabled: true }
+          : {})}
       />
     </InputContainer>
   );
