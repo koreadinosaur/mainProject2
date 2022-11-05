@@ -12,6 +12,8 @@ import Footer from "../component/footerLayout";
 import { Link } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import SignUp from "./signUp";
+import { useLocation } from "react-router-dom";
+
 const LoginContainer = styled.section`
   height: 60rem;
   width: 55rem;
@@ -25,10 +27,16 @@ const ButtonContainer = styled.div`
   display: inline-block;
 `;
 
-const MyPage = ({ user, setUser }) => {
+const MyPage = ({}) => {
+  const location = useLocation();
+  const [currentUser, setCurrentUser] = useState(location.state);
   return (
     <>
-      <SignUp user={user} setUser={setUser} title="My Page" />
+      <SignUp
+        user={currentUser}
+        setCurrentUser={setCurrentUser}
+        title="My Page"
+      />
     </>
   );
 };
