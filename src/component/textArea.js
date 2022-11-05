@@ -10,10 +10,13 @@ const TextAreaBox = styled.textarea`
   transition: all 0.5s ease;
 `;
 
-const TextArea = ({ user }) => {
+const TextArea = ({ user, label, register, required }) => {
   return (
     <>
-      <TextAreaBox defaultValue={user}></TextAreaBox>
+      <TextAreaBox
+        defaultValue={user}
+        {...register(label, { required })}
+      ></TextAreaBox>
     </>
   );
 };
