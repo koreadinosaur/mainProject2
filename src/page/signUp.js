@@ -41,7 +41,8 @@ const SignUp = ({ user, title, setCurrentUser }) => {
     handleSubmit,
     watch,
     formState: { errors },
-  } = useForm();
+    formState,
+  } = useForm({ mode: onchange });
   const watchArray = ["username", "selectedEmailHost", "emailHost"];
   const watchFields = watch(watchArray);
   const watchObject = {};
@@ -57,7 +58,8 @@ const SignUp = ({ user, title, setCurrentUser }) => {
       }
     });
     return () => subscription.unsubscribe();
-  }, [watchFields]);
+  }, [watchFields, formState]);
+
   const usernameValidation = {
     required: "username을 입력해주세요",
     minLength: {
@@ -72,6 +74,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
       value: /^[a-zA-Z0-9]{5,12}$/,
     },
   };
+  const handleBlur = () => {};
   const onSubmit = handleSubmit(async (data) => {
     const birth = data.dateOfBirth.split("-");
     const createdUser = {
@@ -111,6 +114,12 @@ const SignUp = ({ user, title, setCurrentUser }) => {
     }
   });
   const handleClick = async () => {
+    if (watch().username.length < 5) {
+      return alert("username을 5자이상 입력해주세요");
+    }
+    if (formState.errors.username) {
+      return alert(formState.errors.username.message);
+    }
     async function getUser() {
       try {
         const response = await axios({
@@ -147,9 +156,13 @@ const SignUp = ({ user, title, setCurrentUser }) => {
             placeholder="username"
             user={user && String(user.username)}
             validation={usernameValidation}
-            errors={errors}
+            onBlur={handleBlur}
           />
-          <Button buttonName="중복확인" onClick={handleClick} />
+          <Button
+            buttonName="중복확인"
+            onClick={handleClick}
+            errors={errors && errors.username}
+          />
           {errors.username && (
             <ErrorMessage>{errors.username.message}</ErrorMessage>
           )}
