@@ -20,7 +20,7 @@ const ButtonContainer = styled.div`
   width: 100%;
 `;
 
-const Login = ({ users }) => {
+const Login = ({ users, setCurrentUser }) => {
   const {
     register,
     handleSubmit,
@@ -44,14 +44,29 @@ const Login = ({ users }) => {
     }
     const user = await getUser();
 */
-    const user = users.filter((item) => item.username === data.username)[0];
+
+    async function getUser() {
+      try {
+        const response = await axios({
+          method: "post",
+          url: "/api/getUser",
+          data: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        return response.data;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    const user = await getUser();
+
     if (!user) {
-      return alert("아이디를 확인해주세요");
-    } else if (String(user.password) === String(data.password)) {
-      router.push("/mypage");
-      return console.log("success");
+      return alert("아이디 또는 비밀번호를 확인해주세요");
     } else {
-      return alert("비밀번호를 확인해주세요");
+      setCurrentUser(user);
+      router.push("/mypage");
     }
   });
 
