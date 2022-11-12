@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import DropDown from "../../components/common/DropDown";
+import axios from "axios";
 const LoginContainer = styled.section`
   height: 60rem;
   width: 55rem;
@@ -83,7 +84,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
       phone: [data.nationCode, data.phone1, data.phone2, data.phone3],
       username: data.username,
       password: data.password,
-      uuid: (user && user.uuid) || "",
+      uuid: Math.floor(Date.now() / 1000),
     };
     /* async function createOrUpdateUser(method) {
       try {
@@ -97,8 +98,25 @@ const SignUp = ({ user, title, setCurrentUser }) => {
         console.error(error);
       }
     } */
-    console.log(user);
-    if (!user) {
+    async function createUser() {
+      try {
+        const response = await axios({
+          method: "post",
+          url: "/api/signUpUser",
+          data: createdUser,
+        });
+        return response.data;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    const user = await createUser();
+    if (typeof user === "string") {
+      alert("중복된 아이디입니다.");
+    } else {
+      setCurrentUser(user);
+    }
+    /*     if (!user) {
       const registeredUser = await createOrUpdateUser("post");
       return registeredUser ? router.push("/completed") : null;
     } else {
@@ -108,8 +126,9 @@ const SignUp = ({ user, title, setCurrentUser }) => {
       } else {
         alert("변경실패");
       }
-    }
+    } */
   });
+
   const handleClick = async () => {
     if (watch().username.length < 5) {
       return alert("username을 5자이상 입력해주세요");
@@ -117,24 +136,21 @@ const SignUp = ({ user, title, setCurrentUser }) => {
     if (formState.errors.username) {
       return alert(formState.errors.username.message);
     }
+
     async function getUser() {
       try {
         const response = await axios({
           method: "get",
-          url: `http://localhost:5000/user?username=${watchObject.username}`,
+          url: `/api/getUser/${watch().username}`,
         });
-
+        console.log(response);
         return response.data;
       } catch (error) {
         console.error(error);
       }
     }
     const isDuplicated = await getUser();
-    if (!isDuplicated) {
-      alert("사용가능한 username입니다");
-    } else {
-      alert("중복된 username입니다");
-    }
+    alert(isDuplicated);
   };
   const domain = ["naver.com", "daum.net", "gmail.com"];
 
