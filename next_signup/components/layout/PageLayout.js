@@ -11,6 +11,7 @@ const LayoutContainer = styled.div`
 `;
 const NavContainer = styled.div`
   position: absolute;
+  background-color: violet;
   top: 10rem;
 `;
 const PageLayout = ({ children }) => {

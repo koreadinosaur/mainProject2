@@ -32,8 +32,10 @@ const ErrorMessage = styled.div`
   margin-top: 0.5rem;
 `;
 
-const SignUp = ({ user, title, setCurrentUser }) => {
-  const [disabledInput, setDisabledInput] = useState(user ? true : false);
+const MyPage = ({ user, title, setCurrentUser, currentUser }) => {
+  const [disabledInput, setDisabledInput] = useState(
+    currentUser ? true : false
+  );
   const router = useRouter();
   const {
     register,
@@ -76,7 +78,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
 
   const onSubmit = handleSubmit(async (data) => {
     const birth = data.dateOfBirth.split("-");
-    const createdUser = {
+    const updated = {
       dateOfBirth: { year: birth[0], month: birth[1], date: birth[2] },
       email: `${data.email}@${data.selectedEmailHost || data.emailHost}`,
       gender: data.gender,
@@ -84,53 +86,29 @@ const SignUp = ({ user, title, setCurrentUser }) => {
       phone: [data.nationCode, data.phone1, data.phone2, data.phone3],
       username: data.username,
       password: data.password,
-      uuid: Math.floor(Date.now() / 1000),
+      _id: currentUser._id,
     };
-    /* async function createOrUpdateUser(method) {
+    async function updateUser() {
       try {
         const response = await axios({
-          method: method,
-          url: "http://localhost:5000/user",
-          data: createdUser,
+          method: "put",
+          url: "/api/updateUser",
+          data: updated,
         });
         return response.data;
       } catch (error) {
         console.error(error);
       }
-    } */
-    async function createUser() {
-      try {
-        const response = await axios({
-          method: "post",
-          url: "/api/signUpUser",
-          data: createdUser,
-        });
-        return response.data;
-      } catch (e) {
-        console.error(e);
-      }
     }
-    const user = await createUser();
-    console.log(user);
-    if (typeof user === "string") {
-      alert("중복된 아이디입니다.");
-    } else {
-      setCurrentUser(user);
-      router.push("/completed");
-    }
-    /*     if (!user) {
-      const registeredUser = await createOrUpdateUser("post");
-      return registeredUser ? router.push("/completed") : null;
-    } else {
-      const updatedUser = await createOrUpdateUser("put");
-      if (updatedUser) {
-        alert("변경되었습니다");
-      } else {
-        alert("변경실패");
-      }
-    } */
-  });
 
+    const updatedUser = await updateUser();
+
+    if (updatedUser) {
+      alert("변경되었습니다");
+    } else {
+      alert("변경실패");
+    }
+  });
   const handleClick = async () => {
     if (watch().username.length < 5) {
       return alert("username을 5자이상 입력해주세요");
@@ -138,21 +116,24 @@ const SignUp = ({ user, title, setCurrentUser }) => {
     if (formState.errors.username) {
       return alert(formState.errors.username.message);
     }
-
     async function getUser() {
       try {
         const response = await axios({
           method: "get",
-          url: `/api/getUser/${watch().username}`,
+          url: `http://localhost:5000/user?username=${watchObject.username}`,
         });
-        console.log(response);
+
         return response.data;
       } catch (error) {
         console.error(error);
       }
     }
     const isDuplicated = await getUser();
-    alert(isDuplicated);
+    if (!isDuplicated) {
+      alert("사용가능한 username입니다");
+    } else {
+      alert("중복된 username입니다");
+    }
   };
   const domain = ["naver.com", "daum.net", "gmail.com"];
 
@@ -160,7 +141,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
   return (
     <LoginContainer>
       <form onSubmit={onSubmit}>
-        <Header title={title || "SignUp Page"} />
+        <Header title="My Page" />
 
         <InputLayout label="아이디 ">
           <TextInput
@@ -170,7 +151,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
             validation={usernameValidation}
             type="text"
             placeholder="username"
-            user={user && String(user.username)}
+            user={currentUser && String(currentUser.username)}
           />
           <Button
             buttonName="중복확인"
@@ -188,7 +169,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
             label="password"
             type="password"
             placeholder="password"
-            user={user && String(user.password)}
+            user={currentUser && String(currentUser.password)}
           />
         </InputLayout>
         <InputLayout label="생년월일">
@@ -197,7 +178,9 @@ const SignUp = ({ user, title, setCurrentUser }) => {
             register={register}
             label="dateOfBirth"
             type="date"
-            user={user && Object.values(user.dateOfBirth).join("-")}
+            user={
+              currentUser && Object.values(currentUser.dateOfBirth).join("-")
+            }
           />
         </InputLayout>
         <InputLayout label="성별">
@@ -206,14 +189,14 @@ const SignUp = ({ user, title, setCurrentUser }) => {
             label="gender"
             name="gender"
             value="female"
-            user={user && user.gender}
+            user={currentUser && currentUser.gender}
           />
           <RadioButton
             register={register}
             label="gender"
             name="gender"
             value="male"
-            user={user && user.gender}
+            user={currentUser && currentUser.gender}
           />
         </InputLayout>
         <InputLayout label="이메일">
@@ -223,7 +206,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
             register={register}
             type="text"
             width="10rem"
-            user={user && user.email.split("@")[0]}
+            user={currentUser && currentUser.email.split("@")[0]}
             placeholder="email"
           />
           @
@@ -239,7 +222,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
           <DropDown
             options={domain}
             name="site"
-            user={user && user.email.split("@")[1]}
+            user={currentUser && currentUser.email.split("@")[1]}
             label="selectedEmailHost"
             required="required"
             register={register}
@@ -249,7 +232,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
           <DropDown
             options={countryCode}
             name="nationCode"
-            user={user && user.phone[0]}
+            user={currentUser && currentUser.phone[0]}
             label="nationCode"
             required="required"
             register={register}
@@ -261,7 +244,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
             register={register}
             type="text"
             width="8rem"
-            user={user && user.phone[1]}
+            user={currentUser && currentUser.phone[1]}
           />
           -
           <TextInput
@@ -270,7 +253,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
             register={register}
             type="text"
             width="8rem"
-            user={user && user.phone[2]}
+            user={currentUser && currentUser.phone[2]}
           />
           -
           <TextInput
@@ -279,7 +262,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
             register={register}
             type="text"
             width="8rem"
-            user={user && user.phone[3]}
+            user={currentUser && currentUser.phone[3]}
           />
         </InputLayout>
         <InputLayout label="자기소개">
@@ -287,7 +270,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
             label="introduction"
             required="required"
             register={register}
-            user={user && user.introduction}
+            user={currentUser && currentUser.introduction}
           />
         </InputLayout>
 
@@ -296,7 +279,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
 
           <Button
             type="submit"
-            buttonName={user ? "수정하기" : "가입하기"}
+            buttonName={currentUser ? "수정하기" : "가입하기"}
             bgColor="skyblue"
           />
         </Footer>
@@ -305,4 +288,4 @@ const SignUp = ({ user, title, setCurrentUser }) => {
   );
 };
 
-export default SignUp;
+export default MyPage;
