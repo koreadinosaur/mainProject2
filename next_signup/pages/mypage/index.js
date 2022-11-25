@@ -11,6 +11,7 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import DropDown from "../../components/common/DropDown";
 import axios from "axios";
+import { useSelector } from "react-redux";
 const LoginContainer = styled.section`
   height: 60rem;
   width: 55rem;
@@ -32,7 +33,8 @@ const ErrorMessage = styled.div`
   margin-top: 0.5rem;
 `;
 
-const MyPage = ({ user, title, setCurrentUser, currentUser }) => {
+const MyPage = ({}) => {
+  const currentUser = useSelector((state) => state.user.value);
   const [disabledInput, setDisabledInput] = useState(
     currentUser ? true : false
   );
@@ -179,7 +181,9 @@ const MyPage = ({ user, title, setCurrentUser, currentUser }) => {
             label="dateOfBirth"
             type="date"
             user={
-              currentUser && Object.values(currentUser.dateOfBirth).join("-")
+              currentUser &&
+              currentUser.dateOfBirth &&
+              Object.values(currentUser.dateOfBirth).join("-")
             }
           />
         </InputLayout>
@@ -206,7 +210,11 @@ const MyPage = ({ user, title, setCurrentUser, currentUser }) => {
             register={register}
             type="text"
             width="10rem"
-            user={currentUser && currentUser.email.split("@")[0]}
+            user={
+              currentUser &&
+              currentUser.email &&
+              currentUser.email.split("@")[0]
+            }
             placeholder="email"
           />
           @
@@ -222,7 +230,11 @@ const MyPage = ({ user, title, setCurrentUser, currentUser }) => {
           <DropDown
             options={domain}
             name="site"
-            user={currentUser && currentUser.email.split("@")[1]}
+            user={
+              currentUser &&
+              currentUser.email &&
+              currentUser.email.split("@")[1]
+            }
             label="selectedEmailHost"
             required="required"
             register={register}
@@ -232,7 +244,7 @@ const MyPage = ({ user, title, setCurrentUser, currentUser }) => {
           <DropDown
             options={countryCode}
             name="nationCode"
-            user={currentUser && currentUser.phone[0]}
+            user={currentUser && currentUser.phone && currentUser.phone[0]}
             label="nationCode"
             required="required"
             register={register}
@@ -244,7 +256,7 @@ const MyPage = ({ user, title, setCurrentUser, currentUser }) => {
             register={register}
             type="text"
             width="8rem"
-            user={currentUser && currentUser.phone[1]}
+            user={currentUser && currentUser.phone && currentUser.phone[1]}
           />
           -
           <TextInput
@@ -253,7 +265,7 @@ const MyPage = ({ user, title, setCurrentUser, currentUser }) => {
             register={register}
             type="text"
             width="8rem"
-            user={currentUser && currentUser.phone[2]}
+            user={currentUser && currentUser.phone && currentUser.phone[2]}
           />
           -
           <TextInput
@@ -262,7 +274,7 @@ const MyPage = ({ user, title, setCurrentUser, currentUser }) => {
             register={register}
             type="text"
             width="8rem"
-            user={currentUser && currentUser.phone[3]}
+            user={currentUser && currentUser.phone && currentUser.phone[3]}
           />
         </InputLayout>
         <InputLayout label="자기소개">
