@@ -2,6 +2,7 @@ const { MongoClient, ObjectId } = require("mongodb");
 async function handler(req, res) {
   const url = `mongodb+srv://${process.env.MONGODB_ID}:${process.env.MONGODB_PASSWORD}@cluster0.qzj5nsv.mongodb.net/?retryWrites=true&w=majority`;
   const client = new MongoClient(url);
+  console.log(req.body);
   const { _id, toDoList, inProgressList, doneList } = req.body;
   if (!_id) return;
   const id = _id;
