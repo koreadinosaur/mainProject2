@@ -1,7 +1,9 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { isCardUpdated } from "../../src/store/modules/cardSlice";
+import { loginUser } from "../../src/store/modules/userSlice";
 import BoardLayout from "../layout/BoardLayout";
-import NewToDoForm from "./NewToDoForm";
 import ToDoItem from "./ToDoItem";
 const ToDoLi = styled.li`
   display: flex;
@@ -20,27 +22,39 @@ const BoardHeader = styled.div`
   margin-bottom: 1rem;
 `;
 
-function InProgressList({ listItems, boardName, currentUser, setCurrentUser }) {
+function InProgressList({ boardName }) {
   const [isOpenForm, setIsOpenForm] = useState(false);
+  const currentUser = useSelector((state) => state.user.value);
+  const isUpdated = useSelector((state) => state.isCardUpdated.value);
+  const dispatch = useDispatch();
   const handleClick = (e) => {
     if (e.target.tagName !== "BUTTON") {
       return;
     }
     let inProgressItem;
     let newToDoList = currentUser.toDoList.filter((item) => {
-      if (item && item.cardId !== e.target.id * 1) {
+      if (item && item.cardId !== e.target.id) {
         return true;
       } else {
         inProgressItem = item;
         return false;
       }
     });
-    let newInProgressList = [...currentUser.inProgressList, inProgressItem];
-    setCurrentUser({
-      ...currentUser,
-      toDoList: newToDoList,
-      inProgressList: newInProgressList,
-    });
+
+    if (!inProgressItem) return;
+    let newInProgressList =
+      currentUser && currentUser.inProgressList
+        ? [...currentUser.inProgressList, inProgressItem]
+        : [inProgressItem];
+
+    dispatch(
+      loginUser({
+        ...currentUser,
+        toDoList: newToDoList,
+        inProgressList: newInProgressList,
+      })
+    );
+    if (!isUpdated) dispatch(isCardUpdated(true));
   };
   const addToForm = (e) => {
     e.stopPropagation();

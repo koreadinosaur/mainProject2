@@ -1,6 +1,10 @@
 import { useForm } from "react-hook-form";
 import InputLayout from "../layout/InputLayout";
 import styled from "styled-components";
+import { useDispatch, useSelector } from "react-redux";
+import { v4 as uuidv4 } from "uuid";
+import { loginUser } from "../../src/store/modules/userSlice";
+import { isCardUpdated } from "../../src/store/modules/cardSlice";
 const ToDoInputLayout = styled.div`
   width: 45rem;
   margin-bottom: 1.5rem;
@@ -22,10 +26,13 @@ const TextArea = styled.textarea`
   }
   transition: all 0.5s ease;
 `;
-const ButtonCotainer = styled.button`
+const ButtonCotainer = styled.div`
   display: flex;
 `;
-function NewToDoForm({ currentUser, setCurrentUser }) {
+function NewToDoForm({}) {
+  const dispatch = useDispatch();
+  const currentUser = useSelector((state) => state.user.value);
+  const isUpdated = useSelector((state) => state.isCardUpdated.value);
   const {
     register,
     handleSubmit,
@@ -34,10 +41,13 @@ function NewToDoForm({ currentUser, setCurrentUser }) {
     formState,
   } = useForm();
   const onSubmit = handleSubmit((data) => {
-    const dataWithId = { ...data, cardId: Math.floor(Math.random() * 1000) };
-    const newToDoList = [...currentUser.toDoList, dataWithId];
-
-    setCurrentUser({ ...currentUser, toDoList: newToDoList });
+    const toDoItem = { ...data, cardId: uuidv4() };
+    const newToDoList =
+      currentUser && currentUser.toDoList
+        ? [...currentUser.toDoList, toDoItem]
+        : [toDoItem];
+    dispatch(loginUser({ ...currentUser, toDoList: newToDoList }));
+    if (!isUpdated) dispatch(isCardUpdated(true));
   });
   return (
     <form onSubmit={onSubmit}>

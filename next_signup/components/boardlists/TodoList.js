@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
 import BoardLayout from "../layout/BoardLayout";
 import NewToDoForm from "./NewToDoForm";
@@ -14,8 +15,10 @@ const BoardHeader = styled.div`
   height: 3rem;
   margin-bottom: 1rem;
 `;
-function BoardList({ listItems, boardName, currentUser, setCurrentUser }) {
+function TodoList({ boardName }) {
   const [isOpenForm, setIsOpenForm] = useState(false);
+  const currentUser = useSelector((state) => state.user.value);
+  const listItems = currentUser.toDoList;
   const addToForm = () => {
     setIsOpenForm(!isOpenForm);
   };
@@ -34,10 +37,7 @@ function BoardList({ listItems, boardName, currentUser, setCurrentUser }) {
         {isOpenForm && boardName === "To Do" ? (
           <div>
             <button onClick={addToForm}>접기</button>
-            <NewToDoForm
-              currentUser={currentUser}
-              setCurrentUser={setCurrentUser}
-            />
+            <NewToDoForm />
           </div>
         ) : (
           <button onClick={addToForm}>할 일 추가하기</button>
@@ -46,4 +46,4 @@ function BoardList({ listItems, boardName, currentUser, setCurrentUser }) {
     </BoardLayout>
   );
 }
-export default BoardList;
+export default TodoList;

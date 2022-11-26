@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { isCardUpdated } from "../../src/store/modules/cardSlice";
+import { loginUser } from "../../src/store/modules/userSlice";
 import BoardLayout from "../layout/BoardLayout";
-import NewToDoForm from "./NewToDoForm";
+
 import ToDoItem from "./ToDoItem";
 const InProgressLi = styled.li`
   display: flex;
@@ -19,7 +22,10 @@ const BoardHeader = styled.div`
   height: 3rem;
   margin-bottom: 1rem;
 `;
-function DoneList({ boardName, currentUser, setCurrentUser }) {
+function DoneList({ boardName }) {
+  const currentUser = useSelector((state) => state.user.value);
+  const isUpdated = useSelector((state) => state.isCardUpdated.value);
+  const dispatch = useDispatch();
   const [isOpenForm, setIsOpenForm] = useState(false);
   const handleClick = (e) => {
     if (e.target.tagName !== "BUTTON") {
@@ -28,19 +34,25 @@ function DoneList({ boardName, currentUser, setCurrentUser }) {
     let DoneItem;
 
     let newInProgressList = currentUser.inProgressList.filter((item) => {
-      if (item && item.cardId !== e.target.id * 1) {
+      if (item && item.cardId !== e.target.id) {
         return true;
       } else {
         DoneItem = item;
         return false;
       }
     });
-    let newDoneList = [...currentUser.doneList, DoneItem];
-    setCurrentUser({
-      ...currentUser,
-      inProgressList: newInProgressList,
-      doneList: newDoneList,
-    });
+    let newDoneList =
+      currentUser && currentUser.doneList
+        ? [...currentUser.doneList, DoneItem]
+        : [DoneItem];
+    dispatch(
+      loginUser({
+        ...currentUser,
+        inProgressList: newInProgressList,
+        doneList: newDoneList,
+      })
+    );
+    if (!isUpdated) dispatch(isCardUpdated(true));
   };
   const addToForm = (e) => {
     e.stopPropagation();
@@ -61,6 +73,7 @@ function DoneList({ boardName, currentUser, setCurrentUser }) {
           <ul onClick={handleClick}>
             <button onClick={addToForm}>접기</button>
             {currentUser &&
+              currentUser.inProgressList &&
               currentUser.inProgressList.map((item) => (
                 <InProgressLi key={item && item.cardId}>
                   <span>{item && item.todo}</span>
