@@ -1,28 +1,32 @@
+import { hashPassword } from "../../lib/auth";
+
 const { MongoClient } = require("mongodb");
 async function handler(req, res) {
+  const { password, username } = req.body;
+  const userInfo = req.body;
+
   const url = `mongodb+srv://${process.env.MONGODB_ID}:${process.env.MONGODB_PASSWORD}@cluster0.qzj5nsv.mongodb.net/?retryWrites=true&w=majority`;
   const client = new MongoClient(url);
-  async function isDuplicatedUsername(users, username) {
-    const user = users.filter((user) => user.username === username)[0];
-    if (user) {
-      return user;
-    } else {
-      return null;
-    }
-  }
+
   try {
     await client.connect();
     const db = client.db("users");
     const usersCollections = db.collection("users");
 
-    const find = await usersCollections.find().toArray();
-    const isExistingUser = await isDuplicatedUsername(find, req.body.username);
+    const isExistingUser = await usersCollections.findOne({
+      username: username,
+    });
     console.log(isExistingUser);
     if (isExistingUser) {
-      return res.send("중복된 아이디입니다");
+      return res.status(422).send("중복된 아이디입니다");
     }
-    const insertUser = await usersCollections.insertOne(req.body);
-    return res.status(201).send(req.body);
+    const hashedPassword = await hashPassword(password);
+    const insertUser = await usersCollections.insertOne({
+      ...userInfo,
+      password: hashedPassword,
+    });
+    console.log(insertUser);
+    if (insertUser.acknowledged) return res.status(201).send(req.body);
   } catch (err) {
     console.log(err.stack);
   } finally {
