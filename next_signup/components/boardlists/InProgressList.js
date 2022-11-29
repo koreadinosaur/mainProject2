@@ -56,6 +56,12 @@ function InProgressList({ boardName }) {
     );
     if (!isUpdated) dispatch(isCardUpdated(true));
   };
+  const removeFromBoard = (cardId) => {
+    let newInProgressLists = currentUser.inProgressList.filter(
+      (item) => item.cardId !== cardId
+    );
+    dispatch(loginUser({ ...currentUser, inProgressList: newInProgressLists }));
+  };
   const addToForm = (e) => {
     e.stopPropagation();
     setIsOpenForm(!isOpenForm);
@@ -69,7 +75,11 @@ function InProgressList({ boardName }) {
         {currentUser &&
           currentUser.inProgressList &&
           currentUser.inProgressList.map((item) => (
-            <ToDoItem key={item && item.cardId} toDoItem={item} />
+            <ToDoItem
+              removeFromBoard={removeFromBoard}
+              key={item && item.cardId}
+              toDoItem={item}
+            />
           ))}
         {isOpenForm ? (
           <ul onClick={handleClick}>

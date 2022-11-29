@@ -54,6 +54,12 @@ function DoneList({ boardName }) {
     );
     if (!isUpdated) dispatch(isCardUpdated(true));
   };
+  const removeFromBoard = (cardId) => {
+    let newDoneLists = currentUser.doneList.filter(
+      (item) => item.cardId !== cardId
+    );
+    dispatch(loginUser({ ...currentUser, doneList: newDoneLists }));
+  };
   const addToForm = (e) => {
     e.stopPropagation();
     setIsOpenForm(!isOpenForm);
@@ -67,7 +73,11 @@ function DoneList({ boardName }) {
         {currentUser &&
           currentUser.doneList &&
           currentUser.doneList.map((item) => (
-            <ToDoItem key={item && item.cardId} toDoItem={item} />
+            <ToDoItem
+              removeFromBoard={removeFromBoard}
+              key={item && item.cardId}
+              toDoItem={item}
+            />
           ))}
         {isOpenForm ? (
           <ul onClick={handleClick}>

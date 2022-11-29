@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { loginUser } from "../../src/store/modules/userSlice";
 import BoardLayout from "../layout/BoardLayout";
 import NewToDoForm from "./NewToDoForm";
 import ToDoItem from "./ToDoItem";
@@ -17,10 +18,17 @@ const BoardHeader = styled.div`
 `;
 function TodoList({ boardName }) {
   const [isOpenForm, setIsOpenForm] = useState(false);
+  const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.value);
   const listItems = currentUser.toDoList;
   const addToForm = () => {
     setIsOpenForm(!isOpenForm);
+  };
+  const removeFromBoard = (cardId) => {
+    let newToDoLists = currentUser.toDoList.filter(
+      (item) => item.cardId !== cardId
+    );
+    dispatch(loginUser({ ...currentUser, toDoList: newToDoLists }));
   };
   return (
     <BoardLayout>
@@ -31,7 +39,11 @@ function TodoList({ boardName }) {
         <ul>
           {listItems &&
             listItems.map((item) => (
-              <ToDoItem key={item.cardId} toDoItem={item} />
+              <ToDoItem
+                removeFromBoard={removeFromBoard}
+                key={item.cardId}
+                toDoItem={item}
+              />
             ))}
         </ul>
         {isOpenForm && boardName === "To Do" ? (
