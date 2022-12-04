@@ -21,7 +21,7 @@ const Button = ({ buttonName, bgColor, width, type, onClick, errors }) => {
         type={type || null}
         bgColor={bgColor || "skyblue"}
         btnWidth={width}
-        onClick={onClick}
+        {...(onClick ? (onClick = onClick) : {})}
         {...(errors ? { disabled: true } : {})}
       >
         {buttonName || "제출"}

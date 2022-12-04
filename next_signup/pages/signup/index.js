@@ -32,7 +32,7 @@ const ErrorMessage = styled.div`
   margin-top: 0.5rem;
 `;
 
-const SignUp = ({ user, title, setCurrentUser }) => {
+const SignUp = ({ user, title }) => {
   const [disabledInput, setDisabledInput] = useState(user ? true : false);
   const router = useRouter();
   const {
@@ -115,7 +115,6 @@ const SignUp = ({ user, title, setCurrentUser }) => {
     if (typeof user === "string") {
       alert("중복된 아이디입니다.");
     } else {
-      setCurrentUser(user);
       router.push("/completed");
     }
     /*     if (!user) {
@@ -145,7 +144,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
           method: "get",
           url: `/api/getUser/${watch().username}`,
         });
-        console.log(response);
+
         return response.data;
       } catch (error) {
         console.error(error);

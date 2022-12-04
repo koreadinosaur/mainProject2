@@ -11,7 +11,8 @@ import { useForm } from "react-hook-form";
 import styled from "styled-components";
 import DropDown from "../../components/common/DropDown";
 import axios from "axios";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { loginUser } from "../../src/store/modules/userSlice";
 const LoginContainer = styled.section`
   height: 60rem;
   width: 55rem;
@@ -34,6 +35,7 @@ const ErrorMessage = styled.div`
 `;
 
 const MyPage = ({}) => {
+  const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.value);
   const [disabledInput, setDisabledInput] = useState(
     currentUser ? true : false
@@ -63,6 +65,26 @@ const MyPage = ({}) => {
     });
     return () => subscription.unsubscribe();
   }, [watchFields]);
+  /* useEffect(() => {
+    async function getUser() {
+      try {
+        const response = await axios({
+          method: "post",
+          url: "/api/getUser",
+          data: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        console.log(response);
+        dispatch(loginUser(response.data));
+        return response.data;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+    getUser();
+  }, []); */
   const usernameValidation = {
     required: "username을 입력해주세요",
     minLength: {
@@ -79,7 +101,7 @@ const MyPage = ({}) => {
   };
 
   const onSubmit = handleSubmit(async (data) => {
-    const birth = data.dateOfBirth.split("-");
+    const birth = data.dateOfBirth?.split("-");
     const updated = {
       dateOfBirth: { year: birth[0], month: birth[1], date: birth[2] },
       email: `${data.email}@${data.selectedEmailHost || data.emailHost}`,
@@ -153,16 +175,14 @@ const MyPage = ({}) => {
             validation={usernameValidation}
             type="text"
             placeholder="username"
-            user={currentUser && String(currentUser.username)}
+            user={String(currentUser?.username)}
           />
           <Button
             buttonName="중복확인"
             onClick={handleClick}
-            errors={errors && errors.username}
+            errors={errors?.username}
           />
-          {errors.username && (
-            <ErrorMessage>{errors.username.message}</ErrorMessage>
-          )}
+          {<ErrorMessage>{errors?.username?.message}</ErrorMessage>}
         </InputLayout>
         <InputLayout label="비밀번호 ">
           <TextInput
@@ -171,7 +191,7 @@ const MyPage = ({}) => {
             label="password"
             type="password"
             placeholder="password"
-            user={currentUser && String(currentUser.password)}
+            user={String(currentUser?.password)}
           />
         </InputLayout>
         <InputLayout label="생년월일">
@@ -181,9 +201,8 @@ const MyPage = ({}) => {
             label="dateOfBirth"
             type="date"
             user={
-              currentUser &&
-              currentUser.dateOfBirth &&
-              Object.values(currentUser.dateOfBirth).join("-")
+              currentUser?.dateOfBirth &&
+              Object.values(currentUser?.dateOfBirth).join("-")
             }
           />
         </InputLayout>
@@ -193,14 +212,14 @@ const MyPage = ({}) => {
             label="gender"
             name="gender"
             value="female"
-            user={currentUser && currentUser.gender}
+            user={currentUser?.gender}
           />
           <RadioButton
             register={register}
             label="gender"
             name="gender"
             value="male"
-            user={currentUser && currentUser.gender}
+            user={currentUser?.gender}
           />
         </InputLayout>
         <InputLayout label="이메일">
@@ -210,11 +229,7 @@ const MyPage = ({}) => {
             register={register}
             type="text"
             width="10rem"
-            user={
-              currentUser &&
-              currentUser.email &&
-              currentUser.email.split("@")[0]
-            }
+            user={currentUser?.email?.split("@")[0]}
             placeholder="email"
           />
           @
@@ -230,11 +245,7 @@ const MyPage = ({}) => {
           <DropDown
             options={domain}
             name="site"
-            user={
-              currentUser &&
-              currentUser.email &&
-              currentUser.email.split("@")[1]
-            }
+            user={currentUser?.email?.split("@")[1]}
             label="selectedEmailHost"
             required="required"
             register={register}
@@ -244,7 +255,7 @@ const MyPage = ({}) => {
           <DropDown
             options={countryCode}
             name="nationCode"
-            user={currentUser && currentUser.phone && currentUser.phone[0]}
+            user={currentUser?.phone && currentUser.phone?.[0]}
             label="nationCode"
             required="required"
             register={register}
@@ -256,7 +267,7 @@ const MyPage = ({}) => {
             register={register}
             type="text"
             width="8rem"
-            user={currentUser && currentUser.phone && currentUser.phone[1]}
+            user={currentUser?.phone?.[1]}
           />
           -
           <TextInput
@@ -265,7 +276,7 @@ const MyPage = ({}) => {
             register={register}
             type="text"
             width="8rem"
-            user={currentUser && currentUser.phone && currentUser.phone[2]}
+            user={currentUser?.phone?.[2]}
           />
           -
           <TextInput
@@ -274,7 +285,7 @@ const MyPage = ({}) => {
             register={register}
             type="text"
             width="8rem"
-            user={currentUser && currentUser.phone && currentUser.phone[3]}
+            user={currentUser?.phone?.[3]}
           />
         </InputLayout>
         <InputLayout label="자기소개">
@@ -282,7 +293,7 @@ const MyPage = ({}) => {
             label="introduction"
             required="required"
             register={register}
-            user={currentUser && currentUser.introduction}
+            user={currentUser?.introduction}
           />
         </InputLayout>
 

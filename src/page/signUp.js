@@ -42,7 +42,8 @@ const SignUp = ({ user, title, setCurrentUser }) => {
     watch,
     formState: { errors },
     formState,
-  } = useForm({ mode: onchange });
+  } = useForm();
+
   const watchArray = ["username", "selectedEmailHost", "emailHost"];
   const watchFields = watch(watchArray);
   const watchObject = {};
@@ -58,8 +59,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
       }
     });
     return () => subscription.unsubscribe();
-  }, [watchFields, formState]);
-
+  }, [watchFields]);
   const usernameValidation = {
     required: "username을 입력해주세요",
     minLength: {
@@ -74,7 +74,7 @@ const SignUp = ({ user, title, setCurrentUser }) => {
       value: /^[a-zA-Z0-9]{5,12}$/,
     },
   };
-  const handleBlur = () => {};
+
   const onSubmit = handleSubmit(async (data) => {
     const birth = data.dateOfBirth.split("-");
     const createdUser = {
@@ -94,15 +94,14 @@ const SignUp = ({ user, title, setCurrentUser }) => {
           url: "http://localhost:5000/user",
           data: createdUser,
         });
-
         return response.data;
       } catch (error) {
         console.error(error);
       }
     }
+    console.log(user);
     if (!user) {
       const registeredUser = await createOrUpdateUser("post");
-
       return registeredUser ? navigate("/completed") : null;
     } else {
       const updatedUser = await createOrUpdateUser("put");
@@ -152,11 +151,10 @@ const SignUp = ({ user, title, setCurrentUser }) => {
             label="username"
             required="required"
             register={register}
+            validation={usernameValidation}
             type="text"
             placeholder="username"
             user={user && String(user.username)}
-            validation={usernameValidation}
-            onBlur={handleBlur}
           />
           <Button
             buttonName="중복확인"

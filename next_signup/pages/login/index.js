@@ -7,6 +7,10 @@ import TextInput from "../../components/common/TextInput";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import axios from "axios";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../../src/store/modules/userSlice";
+import { signIn } from "next-auth/react";
+
 const LoginContainer = styled.form`
   height: 60rem;
   width: 30rem;
@@ -20,7 +24,7 @@ const ButtonContainer = styled.div`
   width: 100%;
 `;
 
-const Login = ({ users, setCurrentUser }) => {
+const Login = ({}) => {
   const {
     register,
     handleSubmit,
@@ -28,45 +32,21 @@ const Login = ({ users, setCurrentUser }) => {
     formState: { errors },
   } = useForm();
   const router = useRouter();
+  const dispatch = useDispatch();
 
   const onSubmit = handleSubmit(async (data) => {
-    /*     async function getUser() {
-      try {
-        const response = await axios({
-          method: "get",
-          url: `http://localhost:5000/user?username=${data.username}`,
-        });
-
-        return response.data;
-      } catch (error) {
-        console.error(error);
+    try {
+      const result = await signIn("credentials", {
+        redirect: false,
+        data: JSON.stringify(data),
+      });
+      if (!result?.ok) {
+        alert("username 또는 password를 확인해주세요");
+      } else {
+        router.push("/");
       }
-    }
-    const user = await getUser();
-*/
-
-    async function getUser() {
-      try {
-        const response = await axios({
-          method: "post",
-          url: "/api/getUser",
-          data: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        return response.data;
-      } catch (e) {
-        console.error(e);
-      }
-    }
-    const user = await getUser();
-
-    if (!user) {
-      return alert("아이디 또는 비밀번호를 확인해주세요");
-    } else {
-      setCurrentUser(user);
-      router.push("/mypage");
+    } catch (error) {
+      console.log(error);
     }
   });
 

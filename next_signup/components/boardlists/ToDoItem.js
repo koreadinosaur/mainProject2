@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { isCardUpdated } from "../../src/store/modules/cardSlice";
-import Button from "../common/Button";
+
 const ListContainer = styled.li`
   position: relative;
   background-color: white;

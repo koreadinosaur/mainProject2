@@ -4,6 +4,7 @@ import { verifyPassword } from "../../../lib/auth";
 
 const { MongoClient } = require("mongodb");
 import { Provider } from "react-redux";
+import { v3 } from "uuid";
 
 export default NextAuth({
   name: "Credentials",

@@ -3,7 +3,8 @@ import { useEffect } from "react";
 import DoneList from "../components/boardlists/DoneList";
 import InProgressList from "../components/boardlists/InProgressList";
 import TodoList from "../components/boardlists/TodoList";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { isCardUpdated } from "../src/store/modules/cardSlice";
 import axios from "axios";
 const HomeLayout = styled.div`
   height: 100vh;
@@ -81,42 +82,41 @@ const doneList = [
   },
 ];
 
-export default function Home({ setCurrentUser }) {
+export default function Home({}) {
   const currentUser = useSelector((state) => state.user.value);
-  const isCardUpdated = useSelector((state) => state.isCardUpdated.value);
-  console.log(isCardUpdated);
+  const dispatch = useDispatch();
+  const isUpdated = useSelector((state) => state.isCardUpdated.value);
+  console.log(isUpdated);
   useEffect(() => {
-    return () => {
-      if (!isCardUpdated) return;
+    console.log(currentUser);
+    const updateAllChangedLists = () => {
+      if (!isUpdated) return;
       try {
         axios({
           method: "put",
           url: "/api/updateCard",
           data: currentUser,
         });
+        dispatch(isCardUpdated(false));
       } catch (error) {
         console.error(error);
       }
     };
-  }, []);
+    updateAllChangedLists();
+    /* window.addEventListener("beforeunload", updateAllChangedLists);
+    return () => {
+      window.removeEventListener("beforeunload", updateAllChangedLists);
+    }; */
+  }, [currentUser]);
   return (
     <HomeLayout>
       <TodoList
         listItems={currentUser && currentUser.toDoList}
         currentUser={currentUser}
-        setCurrentUser={setCurrentUser}
         boardName="To Do"
       />
-      <InProgressList
-        currentUser={currentUser}
-        setCurrentUser={setCurrentUser}
-        boardName="In Progress"
-      />
-      <DoneList
-        currentUser={currentUser}
-        setCurrentUser={setCurrentUser}
-        boardName="Done"
-      />
+      <InProgressList currentUser={currentUser} boardName="In Progress" />
+      <DoneList currentUser={currentUser} boardName="Done" />
     </HomeLayout>
   );
 }

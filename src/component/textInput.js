@@ -33,7 +33,6 @@ const TextInput = ({
         {...(disabledInput || (name === "emailHost" && user)
           ? { disabled: true }
           : {})}
-        onBlur={onBlur}
       />
     </InputContainer>
   );

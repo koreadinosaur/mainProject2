@@ -1,5 +1,8 @@
 * {
-  box-sizing: border-box;
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 html,
 body {
@@ -9,6 +12,7 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
   font-size: 62.5%;
   background-color: aliceblue;
+  box-sizing: border-box;
 }
 
 a {
@@ -25,7 +29,6 @@ a {
     color-scheme: dark;
   }
   body {
-    color: white;
-    background: black;
+    color: black;
   }
 }

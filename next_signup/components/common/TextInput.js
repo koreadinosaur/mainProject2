@@ -27,6 +27,7 @@ const TextInput = ({
         defaultValue={user === "직접입력" ? "" : user}
         placeholder={placeholder}
         className={name}
+        id={label}
         {...register(label, validation || required)}
         {...(disabledInput || (name === "emailHost" && user)
           ? { disabled: true }
