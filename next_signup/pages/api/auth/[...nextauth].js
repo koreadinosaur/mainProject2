@@ -5,11 +5,27 @@ import { verifyPassword } from "../../../lib/auth";
 const { MongoClient } = require("mongodb");
 import { Provider } from "react-redux";
 import { v3 } from "uuid";
+import { signIn } from "next-auth/react";
 
 export default NextAuth({
   name: "Credentials",
   session: { jwt: true },
-
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        delete user.password;
+        token.userData = user;
+        console.log(user);
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      if (token.userData) {
+        session.user.userData = token.userData;
+      }
+      return session;
+    },
+  },
   providers: [
     CredentialsProvider({
       async authorize(credentials, req) {
