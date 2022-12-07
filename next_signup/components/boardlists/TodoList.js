@@ -19,16 +19,19 @@ const BoardHeader = styled.div`
 function TodoList({ boardName }) {
   const [isOpenForm, setIsOpenForm] = useState(false);
   const dispatch = useDispatch();
+
   const currentUser = useSelector((state) => state.user.value);
-  const listItems = currentUser.toDoList;
+  const listItems = currentUser?.toDoList;
   const addToForm = () => {
     setIsOpenForm(!isOpenForm);
   };
   const removeFromBoard = (cardId) => {
-    let newToDoLists = currentUser.toDoList.filter(
+    let newToDoLists = currentUser?.toDoList?.filter(
       (item) => item.cardId !== cardId
     );
-    dispatch(loginUser({ ...currentUser, toDoList: newToDoLists }));
+    if (currentUser?.username) {
+      dispatch(loginUser({ ...currentUser, toDoList: newToDoLists }));
+    }
   };
   return (
     <BoardLayout>

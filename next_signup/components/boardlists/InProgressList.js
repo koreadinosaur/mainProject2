@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { isCardUpdated } from "../../src/store/modules/cardSlice";
+import { toDoCard } from "../../src/store/modules/cardSlice";
+import { isUpdated } from "../../src/store/modules/isCardUpdated";
 import { loginUser } from "../../src/store/modules/userSlice";
 import BoardLayout from "../layout/BoardLayout";
 import ToDoItem from "./ToDoItem";
@@ -25,7 +26,8 @@ const BoardHeader = styled.div`
 function InProgressList({ boardName }) {
   const [isOpenForm, setIsOpenForm] = useState(false);
   const currentUser = useSelector((state) => state.user.value);
-  const isUpdated = useSelector((state) => state.isCardUpdated.value);
+  const toDoCards = useSelector((state) => state.toDoCard.value);
+  console.log(toDoCards);
   const dispatch = useDispatch();
   const handleClick = (e) => {
     if (e.target.tagName !== "BUTTON") {
@@ -54,7 +56,7 @@ function InProgressList({ boardName }) {
         inProgressList: newInProgressList,
       })
     );
-    if (!isUpdated) dispatch(isCardUpdated(true));
+    dispatch(isUpdated(true));
   };
   const removeFromBoard = (cardId) => {
     let newInProgressLists = currentUser.inProgressList.filter(

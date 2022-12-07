@@ -4,7 +4,8 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { loginUser } from "../../src/store/modules/userSlice";
-import { isCardUpdated } from "../../src/store/modules/cardSlice";
+import { toDoCard } from "../../src/store/modules/cardSlice";
+import { isUpdated } from "../../src/store/modules/isCardUpdated";
 const ToDoInputLayout = styled.div`
   width: 45rem;
   margin-bottom: 1.5rem;
@@ -32,7 +33,7 @@ const ButtonCotainer = styled.div`
 function NewToDoForm({}) {
   const dispatch = useDispatch();
   const currentUser = useSelector((state) => state.user.value);
-  const isUpdated = useSelector((state) => state.isCardUpdated.value);
+  const toDoCards = useSelector((state) => state.toDoCard.value);
   const {
     register,
     handleSubmit,
@@ -42,12 +43,13 @@ function NewToDoForm({}) {
   } = useForm();
   const onSubmit = handleSubmit((data) => {
     const toDoItem = { ...data, cardId: uuidv4() };
-    const newToDoList =
-      currentUser && currentUser.toDoList
-        ? [...currentUser.toDoList, toDoItem]
-        : [toDoItem];
-    dispatch(loginUser({ ...currentUser, toDoList: newToDoList }));
-    if (!isUpdated) dispatch(isCardUpdated(true));
+    const newToDoList = currentUser?.toDoList
+      ? [...currentUser.toDoList, toDoItem]
+      : [toDoItem];
+    if (currentUser?.username) {
+      dispatch(loginUser({ ...currentUser, toDoList: newToDoList }));
+      dispatch(isUpdated(true));
+    }
   });
   return (
     <form onSubmit={onSubmit}>

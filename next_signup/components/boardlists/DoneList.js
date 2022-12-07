@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { isCardUpdated } from "../../src/store/modules/cardSlice";
+import { toDoCard } from "../../src/store/modules/cardSlice";
+import { isUpdated } from "../../src/store/modules/isCardUpdated";
 import { loginUser } from "../../src/store/modules/userSlice";
 import BoardLayout from "../layout/BoardLayout";
 
@@ -24,7 +25,7 @@ const BoardHeader = styled.div`
 `;
 function DoneList({ boardName }) {
   const currentUser = useSelector((state) => state.user.value);
-  const isUpdated = useSelector((state) => state.isCardUpdated.value);
+  const toDoCards = useSelector((state) => state.toDoCard.value);
   const dispatch = useDispatch();
   const [isOpenForm, setIsOpenForm] = useState(false);
   const handleClick = (e) => {
@@ -52,7 +53,7 @@ function DoneList({ boardName }) {
         doneList: newDoneList,
       })
     );
-    if (!isUpdated) dispatch(isCardUpdated(true));
+    dispatch(isUpdated(true));
   };
   const removeFromBoard = (cardId) => {
     let newDoneLists = currentUser.doneList.filter(

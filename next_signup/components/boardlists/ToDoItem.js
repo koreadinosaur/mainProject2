@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { isCardUpdated } from "../../src/store/modules/cardSlice";
 
 const ListContainer = styled.li`
   position: relative;
@@ -43,11 +42,8 @@ const RemoverButton = styled.button`
 `;
 
 function ToDoItem({ toDoItem, removeFromBoard }) {
-  const isUpdated = useSelector((state) => state.isCardUpdated.value);
-  const dispatch = useDispatch();
   const removeCard = (e) => {
     removeFromBoard(e.target.id);
-    dispatch(isCardUpdated(true));
   };
   return (
     <ListContainer>

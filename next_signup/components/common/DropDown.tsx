@@ -7,7 +7,6 @@ const Select = styled.select`
 interface DropDownProps {
   options: string[];
   name: string;
-  register: (label: string, option: {}) => void;
   user: string;
   label: string;
   required: string;
