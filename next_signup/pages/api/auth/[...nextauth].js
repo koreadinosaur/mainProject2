@@ -1,13 +1,10 @@
 import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { verifyPassword } from "../../../lib/auth";
-
 const { MongoClient } = require("mongodb");
-import { Provider } from "react-redux";
-import { v3 } from "uuid";
-import { signIn } from "next-auth/react";
-
-export default NextAuth({
+export const authOptions = {
+  // your configs
+  secret: process.env.NEXTAUTH_SECRET,
   name: "Credentials",
   session: { jwt: true },
   callbacks: {
@@ -20,7 +17,7 @@ export default NextAuth({
       return token;
     },
     async session({ session, token }) {
-      if (token.userData) {
+      if (token?.userData) {
         session.user.userData = token.userData;
       }
       return session;
@@ -63,4 +60,5 @@ export default NextAuth({
       },
     }),
   ],
-});
+};
+export default NextAuth(authOptions);
