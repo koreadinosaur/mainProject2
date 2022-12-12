@@ -12,7 +12,9 @@ import styled from "styled-components";
 import DropDown from "../../components/common/DropDown";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { loginUser } from "../../src/store/modules/userSlice";
+import { unstable_getServerSession } from "next-auth";
+import { authOptions } from "../api/auth/[...nextauth]";
+import { FormValues } from "../signup";
 const LoginContainer = styled.section`
   height: 60rem;
   width: 55rem;
@@ -34,9 +36,9 @@ const ErrorMessage = styled.div`
   margin-top: 0.5rem;
 `;
 
-const MyPage = ({}) => {
+const MyPage = ({ session }) => {
   const dispatch = useDispatch();
-  const currentUser = useSelector((state) => state.user.value);
+  const currentUser = JSON.parse(session);
   const [disabledInput, setDisabledInput] = useState(
     currentUser ? true : false
   );
@@ -70,7 +72,7 @@ const MyPage = ({}) => {
       try {
         const response = await axios({
           method: "post",
-          url: "/api/getUser",
+          url: "/api/user",
           data: JSON.stringify(data),
           headers: {
             "Content-Type": "application/json",
@@ -100,7 +102,7 @@ const MyPage = ({}) => {
     },
   };
 
-  const onSubmit = handleSubmit(async (data) => {
+  const onSubmit = handleSubmit(async (data: FormValues) => {
     const birth = data.dateOfBirth?.split("-");
     const updated = {
       dateOfBirth: { year: birth[0], month: birth[1], date: birth[2] },
@@ -116,7 +118,7 @@ const MyPage = ({}) => {
       try {
         const response = await axios({
           method: "put",
-          url: "/api/updateUser",
+          url: "/api/user/updateUser",
           data: updated,
         });
         return response.data;
@@ -312,3 +314,26 @@ const MyPage = ({}) => {
 };
 
 export default MyPage;
+
+export async function getServerSideProps(context) {
+  const session = await unstable_getServerSession(
+    context.req,
+    context.res,
+    authOptions
+  );
+
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/",
+        permanent: false,
+      },
+    };
+  }
+
+  return {
+    props: {
+      session: JSON.stringify(session.user.userData),
+    },
+  };
+}
