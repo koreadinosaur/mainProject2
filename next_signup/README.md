@@ -10,7 +10,7 @@
 - Mongo DB atlas로 DB에 유저 정보와 To Do List 정보를 연동해서 저장
 ### To Do List, user 정보 CRUD
 - 칸반보드의 To Do List는 Update 제외하고 CRD만 구현
-- user 정보는 CRUD 모두 구현
+- user 정보는 CRU만 구현
 ### 서버
 - 서버는 Next JS로만 구현
 
