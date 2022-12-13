@@ -5,6 +5,7 @@ import { toDoCard } from "../../src/store/modules/cardSlice";
 import { isUpdated } from "../../src/store/modules/isCardUpdated";
 import { loginUser } from "../../src/store/modules/userSlice";
 import BoardLayout from "../layout/BoardLayout";
+import ListOnModal from "./ListOnModal";
 
 import ToDoItem from "./ToDoItem";
 const InProgressLi = styled.li`
@@ -25,7 +26,7 @@ const BoardHeader = styled.div`
 `;
 function DoneList({ boardName }) {
   const currentUser = useSelector((state) => state.user.value);
-  const toDoCards = useSelector((state) => state.toDoCard.value);
+
   const dispatch = useDispatch();
   const [isOpenForm, setIsOpenForm] = useState(false);
   const handleClick = (e) => {
@@ -80,7 +81,12 @@ function DoneList({ boardName }) {
               toDoItem={item}
             />
           ))}
-        {isOpenForm ? (
+        <ListOnModal
+          handleClick={handleClick}
+          displayList={currentUser?.inProgressList}
+          buttonName="완료된 작업"
+        />
+        {/* {isOpenForm ? (
           <ul onClick={handleClick}>
             <button onClick={addToForm}>접기</button>
             {currentUser &&
@@ -94,7 +100,7 @@ function DoneList({ boardName }) {
           </ul>
         ) : (
           <button onClick={addToForm}>완료된 작업 추가</button>
-        )}
+        )} */}
       </CardContainer>
     </BoardLayout>
   );

@@ -1,3 +1,6 @@
+import { Button } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
+import { Fragment } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
@@ -6,6 +9,7 @@ import { isUpdated } from "../../src/store/modules/isCardUpdated";
 import { loginUser } from "../../src/store/modules/userSlice";
 import BoardLayout from "../layout/BoardLayout";
 import ToDoItem from "./ToDoItem";
+import ListOnModal from "./ListOnModal";
 const ToDoLi = styled.li`
   display: flex;
   justify-content: space-between;
@@ -26,8 +30,7 @@ const BoardHeader = styled.div`
 function InProgressList({ boardName }) {
   const [isOpenForm, setIsOpenForm] = useState(false);
   const currentUser = useSelector((state) => state.user.value);
-  const toDoCards = useSelector((state) => state.toDoCard.value);
-  console.log(toDoCards);
+
   const dispatch = useDispatch();
   const handleClick = (e) => {
     if (e.target.tagName !== "BUTTON") {
@@ -83,20 +86,36 @@ function InProgressList({ boardName }) {
               toDoItem={item}
             />
           ))}
+        <ListOnModal
+          handleClick={handleClick}
+          displayList={currentUser?.toDoList}
+          buttonName="진행중인 작업"
+        />
+        {/* <Button
+          variant="contained"
+          onClick={addToForm}
+          style={{ fontSize: 13 }}
+        >
+          {isOpenForm ? (
+            "닫기"
+          ) : (
+            <Fragment>
+              <AddIcon />
+              진행중인 작업
+            </Fragment>
+          )}
+        </Button>
         {isOpenForm ? (
-          <ul onClick={handleClick}>
-            <button onClick={addToForm}>접기</button>
-            {currentUser &&
-              currentUser.toDoList.map((item) => (
-                <ToDoLi key={item && item.cardId} id={item && item.cardId}>
-                  <span>{item && item.todo}</span>
-                  <button id={item && item.cardId}>이동하기</button>
-                </ToDoLi>
-              ))}
-          </ul>
-        ) : (
-          <button onClick={addToForm}>진행중인 작업 추가</button>
-        )}
+          // <ul onClick={handleClick}>
+          //   {currentUser?.toDoList?.map((item) => (
+          //     <ToDoLi key={item && item.cardId} id={item && item.cardId}>
+          //       <span>{item && item.todo}</span>
+          //       <button id={item && item.cardId}>이동하기</button>
+          //     </ToDoLi>
+          //   ))}
+          // </ul>
+
+        ) : null} */}
       </CardContainer>
     </BoardLayout>
   );

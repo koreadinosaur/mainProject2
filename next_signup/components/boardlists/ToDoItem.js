@@ -1,5 +1,9 @@
+import { IconButton } from "@mui/material";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { isUpdated } from "../../src/store/modules/isCardUpdated";
 
 const ListContainer = styled.li`
   position: relative;
@@ -42,15 +46,28 @@ const RemoverButton = styled.button`
 `;
 
 function ToDoItem({ toDoItem, removeFromBoard }) {
+  const dispatch = useDispatch();
   const removeCard = (e) => {
+    console.log(e.target.id);
+    dispatch(isUpdated(true));
     removeFromBoard(e.target.id);
   };
   return (
     <ListContainer>
       <Todo>{toDoItem && toDoItem.todo}</Todo>
       <span>기한 : {toDoItem && toDoItem.date}</span>
-      <RemoverButton onClick={removeCard} id={toDoItem && toDoItem.cardId}>
+      <IconButton aria-label="update">
+        <EditIcon />
+      </IconButton>
+      {/* <RemoverButton onClick={removeCard} id={toDoItem && toDoItem.cardId}>
         삭제
+      </RemoverButton> */}
+      <RemoverButton
+        aria-label="delete"
+        onClick={removeCard}
+        id={toDoItem?.cardId}
+      >
+        <DeleteIcon fontSize="large" id={toDoItem?.cardId} />
       </RemoverButton>
     </ListContainer>
   );
