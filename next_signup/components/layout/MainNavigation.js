@@ -4,8 +4,20 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
+import HomeIcon from "@mui/icons-material/Home";
+import ListAltIcon from "@mui/icons-material/ListAlt";
+import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import LoginIcon from "@mui/icons-material/Login";
+import HeaderOptions from "./HeaderOptions";
+import LogoutIcon from "@mui/icons-material/Logout";
+import PeopleIcon from "@mui/icons-material/People";
 import { loginUser } from "../../src/store/modules/userSlice";
 import axios from "axios";
+const NavBar = styled.ul`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
 const NavLink = styled(Link)`
   margin-right: 1rem;
 
@@ -30,37 +42,36 @@ const MainNavigation = () => {
   const { data: session, status } = useSession();
   const currentUser = useSelector((state) => state.user.value);
   const dispatch = useDispatch();
-  const userData = session?.user?.userData;
-  useEffect(() => {
-    if (!currentUser?.username && status === "authenticated") {
-      async function getToDoList() {
-        try {
-          const response = await axios({
-            method: "post",
-            url: "/api/todolist",
-            data: userData,
-          });
-          const { toDoList, inProgressList, doneList } = response.data;
-          const boardLists = { toDoList, inProgressList, doneList };
-          dispatch(loginUser({ ...userData, ...boardLists }));
-          return response.data;
-        } catch (e) {
-          console.error(e);
-        }
-      }
-      // getToDoList();
-    }
-  }, [userData]);
 
   return (
-    <Fragment>
-      <NavLink href="/">Home</NavLink>
-      {!session ? <NavLink href="/login">login</NavLink> : null}
-      {!session ? <NavLink href="/signup">signup</NavLink> : null}
-      {session ? <NavLink href="/mypage">mypage</NavLink> : null}
-      {session ? <NavLink href="/todolist">ToDoList</NavLink> : null}
-      {session ? <Logout onClick={() => signOut()}>logout</Logout> : null}
-    </Fragment>
+    <NavBar>
+      <HeaderOptions href="/" Icon={HomeIcon} title="Home" />
+
+      {!session ? (
+        <HeaderOptions href="/login" Icon={LoginIcon} title="login" />
+      ) : null}
+
+      {!session ? (
+        <HeaderOptions href="/signup" Icon={PeopleIcon} title="signup" />
+      ) : null}
+      {session ? (
+        <HeaderOptions href="/todolist" Icon={ListAltIcon} title="ToDoList" />
+      ) : null}
+      {session ? (
+        <HeaderOptions
+          href="/mypage"
+          Icon={AccountCircleIcon}
+          title="profile"
+        />
+      ) : null}
+      {session ? (
+        <Logout onClick={() => signOut()}>
+          <LogoutIcon style={{ fontSize: 40 }} />
+          <br></br>
+          logout
+        </Logout>
+      ) : null}
+    </NavBar>
   );
 };
 
