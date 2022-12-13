@@ -20,10 +20,10 @@ const HomeLayout = styled.div`
 const ToDoBoard = ({ user }) => {
   const currentUser = useSelector((state) => state.user.value);
   const isCardUpdated = useSelector((state) => state.isCardUpdated.value);
-  console.log(isCardUpdated);
+  // console.log(isCardUpdated);
   const dispatch = useDispatch();
-  console.log("todolist user : ", user);
-  console.log("todolist parsed : ", JSON.parse(user));
+  // console.log("todolist user : ", user);
+  // console.log("todolist parsed : ", JSON.parse(user));
   useEffect(() => {
     if (!currentUser.username) {
       dispatch(loginUser(JSON.parse(user)));
@@ -32,7 +32,7 @@ const ToDoBoard = ({ user }) => {
   useEffect(() => {
     const updateAllChangedLists = async () => {
       try {
-        console.log("todopage currentUser : ", currentUser);
+        // console.log("todopage currentUser : ", currentUser);
         const updated = await axios({
           method: "put",
           url: "/api/todolist/update",

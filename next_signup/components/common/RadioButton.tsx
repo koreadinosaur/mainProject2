@@ -1,5 +1,7 @@
 import { useState } from "react";
+import { UseFormRegister, FieldValues } from "react-hook-form";
 import styled from "styled-components";
+
 const Input = styled.input`
   margin-left: 1rem;
 `;
@@ -8,7 +10,9 @@ interface RadioButtonProps {
   user: string;
   label: string;
   value: string;
+  register: UseFormRegister<FieldValues>;
 }
+
 const RadioButton = ({
   value,
   name,

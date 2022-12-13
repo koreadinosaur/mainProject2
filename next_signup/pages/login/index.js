@@ -40,6 +40,7 @@ const Login = ({}) => {
         redirect: false,
         data: JSON.stringify(data),
       });
+      console.log(result);
       if (!result?.ok) {
         alert("username 또는 password를 확인해주세요");
       } else {
