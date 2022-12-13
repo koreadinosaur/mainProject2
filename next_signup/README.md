@@ -7,4 +7,5 @@
 - typescript
 - Mongo DB atlas
 - next-Auth
-
+- redux-toolkit
+- Material UI
