@@ -1,34 +1,26 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+<img width="80%" src="https://user-images.githubusercontent.com/91491029/207256195-ca61b8a9-69b4-43b9-9454-b8b7c06297d5.gif"/>
 
-## Getting Started
+# 구현 기능
+### Kanban board 형식의 To Do List
+- To Do board, in Progress board, Done board 세 보드로 해야할 업무, 진행중인 업무, 완료된 업무로 나눠서 관리할 수 있다
+### 인증 / 보안
+- Next-Auth를 사용해 토큰 발급, 세션 유지
+- 토큰을 decode 해서 확인하는 건 아직 구현하지 않았다. 지금은 토큰이 존재하기만 하면 유효한 토큰으로 간주함
+### DB
+- Mongo DB atlas로 DB에 유저 정보와 To Do List 정보를 연동해서 저장
+### To Do List, user 정보 CRUD
+- 칸반보드의 To Do List는 Update 제외하고 CRD만 구현
+- user 정보는 CRU만 구현
+### 서버
+- 서버는 Next JS로만 구현
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
-
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
-
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+# 기술 스택
+- next js
+- styled-components
+- typescript
+- Mongo DB atlas
+- next-Auth
+- redux-toolkit
+- Material UI
+- react-hook-form
