@@ -1,6 +1,5 @@
 import { Button } from "@mui/material";
 import { Fragment, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { useAppDispatch, useAppSelector } from "../../src/store/hook";
 import { isUpdated } from "../../src/store/modules/isCardUpdated";
@@ -9,6 +8,7 @@ import BoardLayout from "../layout/BoardLayout";
 import NewToDoForm from "./NewToDoForm";
 import ToDoItem from "./ToDoItem";
 import AddIcon from "@mui/icons-material/Add";
+import { ToDoFormDataType } from "./ToDoFormType";
 const CardContainer = styled.div`
   border-radius: 0.7rem;
   background-color: #59b4d1;
@@ -32,7 +32,7 @@ const FormContainer = styled.div`
     }
   }
 `;
-function TodoList({ boardName }) {
+function TodoList({ boardName }: { boardName: string }) {
   const [isOpenForm, setIsOpenForm] = useState(false);
   // const dispatch = useDispatch();
   const dispatch = useAppDispatch();
@@ -41,11 +41,11 @@ function TodoList({ boardName }) {
   const openForm = () => {
     setIsOpenForm(!isOpenForm);
   };
-  const removeFromBoard = (cardId) => {
+  const removeFromBoard = (cardId: string) => {
     console.log("cardId : ", cardId);
 
     let newToDoLists = currentUser?.toDoList?.filter(
-      (item) => item.cardId !== cardId
+      (item: ToDoFormDataType) => item.cardId !== cardId
     );
     if (currentUser?.username) {
       console.log("hi");
@@ -62,7 +62,7 @@ function TodoList({ boardName }) {
         </BoardHeader>
         <ul>
           {listItems &&
-            listItems.map((item) => (
+            listItems.map((item: ToDoFormDataType) => (
               <ToDoItem
                 removeFromBoard={removeFromBoard}
                 key={item.cardId}

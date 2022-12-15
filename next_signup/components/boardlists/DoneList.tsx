@@ -1,12 +1,11 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { toDoCard } from "../../src/store/modules/cardSlice";
+import { useAppDispatch, useAppSelector } from "../../src/store/hook";
 import { isUpdated } from "../../src/store/modules/isCardUpdated";
 import { loginUser } from "../../src/store/modules/userSlice";
 import BoardLayout from "../layout/BoardLayout";
 import ListOnModal from "./ListOnModal";
-
+import { ToDoFormDataType } from "./ToDoFormType";
 import ToDoItem from "./ToDoItem";
 const InProgressLi = styled.li`
   display: flex;
@@ -24,10 +23,10 @@ const BoardHeader = styled.div`
   height: 3rem;
   margin-bottom: 1rem;
 `;
-function DoneList({ boardName }) {
-  const currentUser = useSelector((state) => state.user.value);
+function DoneList({ boardName }: { boardName: string }) {
+  const currentUser = useAppSelector((state) => state.user.value);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const [isOpenForm, setIsOpenForm] = useState(false);
   const handleClick = (e) => {
     if (e.target.tagName !== "BUTTON") {
@@ -35,14 +34,16 @@ function DoneList({ boardName }) {
     }
     let DoneItem;
 
-    let newInProgressList = currentUser.inProgressList.filter((item) => {
-      if (item && item.cardId !== e.target.id) {
-        return true;
-      } else {
-        DoneItem = item;
-        return false;
+    let newInProgressList = currentUser.inProgressList.filter(
+      (item: ToDoFormDataType) => {
+        if (item && item.cardId !== e.target.id) {
+          return true;
+        } else {
+          DoneItem = item;
+          return false;
+        }
       }
-    });
+    );
     let newDoneList =
       currentUser && currentUser.doneList
         ? [...currentUser.doneList, DoneItem]
@@ -56,9 +57,9 @@ function DoneList({ boardName }) {
     );
     dispatch(isUpdated(true));
   };
-  const removeFromBoard = (cardId) => {
+  const removeFromBoard = (cardId: string) => {
     let newDoneLists = currentUser.doneList.filter(
-      (item) => item.cardId !== cardId
+      (item: ToDoFormDataType) => item.cardId !== cardId
     );
     dispatch(loginUser({ ...currentUser, doneList: newDoneLists }));
   };
@@ -74,7 +75,7 @@ function DoneList({ boardName }) {
         </BoardHeader>
         {currentUser &&
           currentUser.doneList &&
-          currentUser.doneList.map((item) => (
+          currentUser.doneList.map((item: ToDoFormDataType) => (
             <ToDoItem
               removeFromBoard={removeFromBoard}
               key={item && item.cardId}

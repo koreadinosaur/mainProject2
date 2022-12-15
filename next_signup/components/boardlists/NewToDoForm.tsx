@@ -4,10 +4,10 @@ import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
 import { loginUser } from "../../src/store/modules/userSlice";
-import { toDoCard } from "../../src/store/modules/cardSlice";
 import { isUpdated } from "../../src/store/modules/isCardUpdated";
 import { useAppSelector } from "../../src/store/hook";
 import { TextField } from "@mui/material";
+import { ToDoFormDataType } from "./ToDoFormType";
 const Form = styled.form`
   color: white;
   margin-top: 1.5rem;
@@ -47,7 +47,7 @@ function NewToDoForm({}) {
     formState: { errors },
     formState,
   } = useForm();
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit((data: ToDoFormDataType) => {
     const toDoItem = { ...data, cardId: uuidv4() };
     const newToDoList = currentUser?.toDoList
       ? [...currentUser.toDoList, toDoItem]

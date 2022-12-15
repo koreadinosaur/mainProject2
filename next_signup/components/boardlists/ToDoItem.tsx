@@ -4,6 +4,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { isUpdated } from "../../src/store/modules/isCardUpdated";
+import { useAppDispatch } from "../../src/store/hook";
 
 const ListContainer = styled.li`
   position: relative;
@@ -46,7 +47,8 @@ const RemoverButton = styled.button`
 `;
 
 function ToDoItem({ toDoItem, removeFromBoard }) {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
+
   const removeCard = (e) => {
     console.log(e.target.id);
     dispatch(isUpdated(true));

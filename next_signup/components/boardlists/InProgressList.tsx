@@ -4,12 +4,13 @@ import { Fragment } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { toDoCard } from "../../src/store/modules/cardSlice";
 import { isUpdated } from "../../src/store/modules/isCardUpdated";
 import { loginUser } from "../../src/store/modules/userSlice";
 import BoardLayout from "../layout/BoardLayout";
 import ToDoItem from "./ToDoItem";
 import ListOnModal from "./ListOnModal";
+import { ToDoFormDataType } from "./ToDoFormType";
+import { useAppDispatch, useAppSelector } from "../../src/store/hook";
 const ToDoLi = styled.li`
   display: flex;
   justify-content: space-between;
@@ -27,17 +28,17 @@ const BoardHeader = styled.div`
   margin-bottom: 1rem;
 `;
 
-function InProgressList({ boardName }) {
+function InProgressList({ boardName }: { boardName: string }) {
   const [isOpenForm, setIsOpenForm] = useState(false);
-  const currentUser = useSelector((state) => state.user.value);
+  const currentUser = useAppSelector((state) => state.user.value);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const handleClick = (e) => {
     if (e.target.tagName !== "BUTTON") {
       return;
     }
     let inProgressItem;
-    let newToDoList = currentUser.toDoList.filter((item) => {
+    let newToDoList = currentUser.toDoList.filter((item: ToDoFormDataType) => {
       if (item && item.cardId !== e.target.id) {
         return true;
       } else {
@@ -61,9 +62,9 @@ function InProgressList({ boardName }) {
     );
     dispatch(isUpdated(true));
   };
-  const removeFromBoard = (cardId) => {
+  const removeFromBoard = (cardId: string) => {
     let newInProgressLists = currentUser.inProgressList.filter(
-      (item) => item.cardId !== cardId
+      (item: ToDoFormDataType) => item.cardId !== cardId
     );
     dispatch(loginUser({ ...currentUser, inProgressList: newInProgressLists }));
   };
@@ -79,7 +80,7 @@ function InProgressList({ boardName }) {
         </BoardHeader>
         {currentUser &&
           currentUser.inProgressList &&
-          currentUser.inProgressList.map((item) => (
+          currentUser.inProgressList.map((item: ToDoFormDataType) => (
             <ToDoItem
               removeFromBoard={removeFromBoard}
               key={item && item.cardId}
