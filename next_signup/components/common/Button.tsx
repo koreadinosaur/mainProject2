@@ -1,5 +1,5 @@
 import styled from "styled-components";
-const ButtonElement = styled.button`
+const ButtonElement = styled.button<ButtonProps>`
   display: inline-block;
   border: none;
   border-radius: 0.3rem;
@@ -16,11 +16,12 @@ const ButtonElement = styled.button`
 interface ButtonProps {
   onClick?: (event: React.MouseEvent<HTMLButtonElement>) => void; // to handle onClick functions
   children?: React.ReactNode; // make the component able to receive children elements
-  bgColor?: string;
+  bgColor?: any;
   width?: string;
-  type?: string;
-  errors?: string;
+  type?: "button" | "submit" | "reset";
+  errors?: any;
   buttonName?: string;
+  btnWidth?: string;
 }
 const Button = ({
   buttonName,
@@ -33,7 +34,7 @@ const Button = ({
   return (
     <>
       <ButtonElement
-        type={type || null}
+        type={type || "submit"}
         bgColor={bgColor || "skyblue"}
         btnWidth={width}
         onClick={onClick}
