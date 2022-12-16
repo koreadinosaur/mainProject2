@@ -3,14 +3,12 @@ import { useEffect } from "react";
 import DoneList from "../../components/boardlists/DoneList";
 import InProgressList from "../../components/boardlists/InProgressList";
 import TodoList from "../../components/boardlists/TodoList";
-import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
-import { toDoCardLists } from "../../src/store/modules/cardSlice";
 import { loginUser } from "../../src/store/modules/userSlice";
-import { useSession } from "next-auth/react";
 import { isUpdated } from "../../src/store/modules/isCardUpdated";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
+import { useAppDispatch, useAppSelector } from "../../src/store/hook";
 const HomeLayout = styled.div`
   height: 100vh;
   display: flex;
@@ -18,10 +16,10 @@ const HomeLayout = styled.div`
 `;
 
 const ToDoBoard = ({ user }) => {
-  const currentUser = useSelector((state) => state.user.value);
-  const isCardUpdated = useSelector((state) => state.isCardUpdated.value);
+  const currentUser = useAppSelector((state) => state.user.value);
+  const isCardUpdated = useAppSelector((state) => state.isCardUpdated.value);
   // console.log(isCardUpdated);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   // console.log("todolist user : ", user);
   // console.log("todolist parsed : ", JSON.parse(user));
   useEffect(() => {
@@ -54,13 +52,9 @@ const ToDoBoard = ({ user }) => {
 
   return (
     <HomeLayout>
-      <TodoList
-        listItems={currentUser && currentUser.toDoList}
-        currentUser={currentUser}
-        boardName="To Do"
-      />
-      <InProgressList currentUser={currentUser} boardName="In Progress" />
-      <DoneList currentUser={currentUser} boardName="Done" />
+      <TodoList boardName="To Do" />
+      <InProgressList boardName="In Progress" />
+      <DoneList boardName="Done" />
     </HomeLayout>
   );
 };
