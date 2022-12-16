@@ -35,10 +35,10 @@ const ErrorMessage = styled.div`
 export type FormValues = {
   dateOfBirth: string;
   email: string;
-  selectedEmailHost: string | null;
-  emailHost: string | null;
+  selectedEmailHost?: string;
+  emailHost?: string;
   gender: string;
-  introduction: string | null;
+  introduction?: string;
   nationCode: string;
   phone1: string;
   phone2: string;
@@ -60,10 +60,12 @@ const SignUp = ({ user, title }) => {
 
   const watchArray = ["username", "selectedEmailHost", "emailHost"];
   const watchFields = watch(watchArray);
-  const watchObject = {};
-  watchArray.forEach((item, index) => {
-    watchObject[item] = watchFields[index];
-  });
+  const watchObject = {
+    username: watchFields[0],
+    selectedEmailHost: watchFields[1],
+    emailHost: watchFields[2],
+  };
+
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
       if (value.selectedEmailHost !== "직접입력") {
@@ -213,7 +215,7 @@ const SignUp = ({ user, title }) => {
             errors={errors?.username}
           />
           {errors.username && (
-            <ErrorMessage>{errors.username.message}</ErrorMessage>
+            <ErrorMessage>{errors?.username?.message}</ErrorMessage>
           )}
         </InputLayout>
         <InputLayout label="비밀번호 ">
