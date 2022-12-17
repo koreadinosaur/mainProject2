@@ -4,13 +4,13 @@ import { Fragment } from "react";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { isUpdated } from "../../src/store/modules/isCardUpdated";
-import { loginUser } from "../../src/store/modules/userSlice";
+import { isUpdated } from "../../src/redux/slices/isCardUpdated";
+import { loginUser } from "../../src/redux/slices/userSlice";
 import BoardLayout from "../layout/BoardLayout";
 import ToDoItem from "./ToDoItem";
 import ListOnModal from "./ListOnModal";
 import { ToDoFormDataType } from "./ToDoFormType";
-import { useAppDispatch, useAppSelector } from "../../src/store/hook";
+import { useAppDispatch, useAppSelector } from "../../src/redux/hook";
 const ToDoLi = styled.li`
   display: flex;
   justify-content: space-between;

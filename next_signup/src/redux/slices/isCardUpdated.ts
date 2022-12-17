@@ -1,4 +1,4 @@
-import { RootState } from "./../index";
+import { RootState } from "../index";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 interface IsCardUpdatedState {
   value: boolean;

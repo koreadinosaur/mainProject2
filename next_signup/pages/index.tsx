@@ -1,11 +1,5 @@
 import styled from "styled-components";
-import { useEffect } from "react";
-import DoneList from "../components/boardlists/DoneList";
-import InProgressList from "../components/boardlists/InProgressList";
-import TodoList from "../components/boardlists/TodoList";
-import { useDispatch, useSelector } from "react-redux";
-import { isCardUpdated } from "../src/store/modules/cardSlice";
-import axios from "axios";
+
 const HomeLayout = styled.div`
   height: 100vh;
 `;
@@ -28,33 +22,6 @@ const Introduction = styled.div`
   }
 `;
 export default function Home({}) {
-  /*   const currentUser = useSelector((state) => state.user.value);
-
-  useEffect(() => {
-    const updateAllChangedLists = async () => {
-      try {
-        const updated = await axios({
-          method: "put",
-          url: "/api/todolist/update",
-          data: currentUser,
-        });
-        console.log(updated);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    updateAllChangedLists();
-  }, [currentUser.DoneList, currentUser.toDoList, currentUser.inProgressList]); */
-  useEffect(() => {
-    const getLoginUser = async () => {
-      try {
-        console.log(loginUser);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    // getLoginUser();
-  }, []);
   return (
     <HomeLayout>
       {/* <TodoList

@@ -3,8 +3,8 @@ import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { isUpdated } from "../../src/store/modules/isCardUpdated";
-import { useAppDispatch } from "../../src/store/hook";
+import { isUpdated } from "../../src/redux/slices/isCardUpdated";
+import { useAppDispatch } from "../../src/redux/hook";
 
 const ListContainer = styled.li`
   position: relative;

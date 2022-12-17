@@ -14,13 +14,21 @@ interface RegisterUserFormValue {
   username: string;
   password: string;
 }
-type LayoutProps {
+type LayoutProps = {
   children: ReactElement;
-}
-interface BoardLayoutProps extends LayoutProps {
-
-}
+};
+interface BoardLayoutProps extends LayoutProps {}
 interface FooterLayoutProps extends LayoutProps {
   width: string;
 }
-export type { RegisterUserFormValue, BoardLayoutProps, FooterLayoutProps };
+interface InputLayoutProps extends LayoutProps {
+  label?: string;
+}
+
+export type {
+  LayoutProps,
+  RegisterUserFormValue,
+  BoardLayoutProps,
+  FooterLayoutProps,
+  InputLayoutProps,
+};

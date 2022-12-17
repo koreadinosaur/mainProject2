@@ -1,7 +1,7 @@
-import { RootState } from "./../index";
+import { RootState } from "../index";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ToDoFormDataType } from "../../../components/boardlists/ToDoFormType";
-import { User } from "next-auth";
+
 interface UserState {
   value: {
     username: string;

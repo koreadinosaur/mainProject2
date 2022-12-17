@@ -1,8 +1,8 @@
 import { useState } from "react";
 import styled from "styled-components";
-import { useAppDispatch, useAppSelector } from "../../src/store/hook";
-import { isUpdated } from "../../src/store/modules/isCardUpdated";
-import { loginUser } from "../../src/store/modules/userSlice";
+import { useAppDispatch, useAppSelector } from "../../src/redux/hook";
+import { isUpdated } from "../../src/redux/slices/isCardUpdated";
+import { loginUser } from "../../src/redux/slices/userSlice";
 import BoardLayout from "../layout/BoardLayout";
 import ListOnModal from "./ListOnModal";
 import { ToDoFormDataType } from "./ToDoFormType";

@@ -3,9 +3,9 @@ import InputLayout from "../layout/InputLayout";
 import styled from "styled-components";
 import { useDispatch, useSelector } from "react-redux";
 import { v4 as uuidv4 } from "uuid";
-import { loginUser } from "../../src/store/modules/userSlice";
-import { isUpdated } from "../../src/store/modules/isCardUpdated";
-import { useAppSelector } from "../../src/store/hook";
+import { loginUser } from "../../src/redux/slices/userSlice";
+import { isUpdated } from "../../src/redux/slices/isCardUpdated";
+import { useAppSelector } from "../../src/redux/hook";
 import { TextField } from "@mui/material";
 import { ToDoFormDataType } from "./ToDoFormType";
 const Form = styled.form`

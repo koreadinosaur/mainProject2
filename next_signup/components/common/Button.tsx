@@ -22,6 +22,7 @@ interface ButtonProps {
   errors?: any;
   buttonName?: string;
   btnWidth?: string;
+  display?: string;
 }
 const Button = ({
   buttonName,

@@ -9,9 +9,9 @@ import LoginIcon from "@mui/icons-material/Login";
 import HeaderOptions from "./HeaderOptions";
 import LogoutIcon from "@mui/icons-material/Logout";
 import PeopleIcon from "@mui/icons-material/People";
-import { loginUser } from "../../src/store/modules/userSlice";
+import { loginUser } from "../../src/redux/slices/userSlice";
 import axios from "axios";
-import { useAppDispatch, useAppSelector } from "../../src/store/hook";
+import { useAppDispatch, useAppSelector } from "../../src/redux/hook";
 const NavBar = styled.ul`
   display: flex;
   align-items: center;

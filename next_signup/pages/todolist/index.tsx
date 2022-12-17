@@ -4,11 +4,11 @@ import DoneList from "../../components/boardlists/DoneList";
 import InProgressList from "../../components/boardlists/InProgressList";
 import TodoList from "../../components/boardlists/TodoList";
 import axios from "axios";
-import { loginUser } from "../../src/store/modules/userSlice";
-import { isUpdated } from "../../src/store/modules/isCardUpdated";
+import { loginUser } from "../../src/redux/slices/userSlice";
+import { isUpdated } from "../../src/redux/slices/isCardUpdated";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { useAppDispatch, useAppSelector } from "../../src/store/hook";
+import { useAppDispatch, useAppSelector } from "../../src/redux/hook";
 const HomeLayout = styled.div`
   height: 100vh;
   display: flex;

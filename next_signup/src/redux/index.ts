@@ -1,7 +1,7 @@
 import { configureStore } from "@reduxjs/toolkit";
-import userReducer from "./modules/userSlice";
-import cardReducer from "./modules/cardSlice";
-import updateReducer from "./modules/isCardUpdated";
+import userReducer from "./slices/userSlice";
+import cardReducer from "./slices/cardSlice";
+import updateReducer from "./slices/isCardUpdated";
 
 export const store = configureStore({
   reducer: {

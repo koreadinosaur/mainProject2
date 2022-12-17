@@ -8,7 +8,7 @@ import { useForm } from "react-hook-form";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { useDispatch } from "react-redux";
-import { loginUser } from "../../src/store/modules/userSlice";
+import { loginUser } from "../../src/redux/slices/userSlice";
 import { signIn } from "next-auth/react";
 
 const LoginContainer = styled.form`

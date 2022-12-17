@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { LayoutProps } from "../../types/interface";
 import MainNavigation from "./MainNavigation";
 const LayoutContainer = styled.div`
   height: 60rem;
@@ -15,7 +16,7 @@ const NavContainer = styled.div`
   width: 100%;
   transform: translateX(-50%);
 `;
-const PageLayout = ({ children }) => {
+const PageLayout = ({ children }: LayoutProps) => {
   return (
     <LayoutContainer>
       <NavContainer>
