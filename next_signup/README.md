@@ -35,6 +35,7 @@
 - Material UI
 - react-hook-form
 
+```
 📦components
 ┣ 📂boardlists
 ┃ ┣ 📜DoneList.js
@@ -76,7 +77,6 @@
 ┃ ┃ ┣ 📜index.js
 ┃ ┃ ┣ 📜signUpUser.js
 ┃ ┃ ┗ 📜updateUser.js
-┃ ┗ 📜test.js
 ┣ 📂auth
 ┃ ┗ 📜login.js
 ┣ 📂completed
@@ -87,7 +87,6 @@
 ┃ ┗ 📜index.tsx
 ┣ 📂signup
 ┃ ┣ 📜index.tsx
-┃ ┗ 📜test.js
 ┣ 📂todolist
 ┃ ┗ 📜index.js
 ┣ 📂users
@@ -96,3 +95,4 @@
 ┣ 📜_document.tsx
 ┣ 📜auth.js
 ┗ 📜index.js
+```
