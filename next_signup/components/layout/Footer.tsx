@@ -1,5 +1,6 @@
 import styled from "styled-components";
-const FooterContainer = styled.footer`
+import { FooterLayoutProps } from "../../types/interface";
+const FooterContainer = styled.footer<FooterLayoutProps>`
   width: ${(props) => props.width};
   margin: auto;
   display: flex;
@@ -7,7 +8,7 @@ const FooterContainer = styled.footer`
   justify-content: space-around;
 `;
 
-const Footer = ({ children, width }) => {
+const Footer = ({ children, width }: FooterLayoutProps) => {
   return <FooterContainer width={width}>{children}</FooterContainer>;
 };
 

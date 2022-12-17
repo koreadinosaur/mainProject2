@@ -1,7 +1,5 @@
 import Link from "next/link";
-import { Fragment, useEffect } from "react";
 import styled from "styled-components";
-import { useDispatch, useSelector } from "react-redux";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import HomeIcon from "@mui/icons-material/Home";
@@ -13,6 +11,7 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import PeopleIcon from "@mui/icons-material/People";
 import { loginUser } from "../../src/store/modules/userSlice";
 import axios from "axios";
+import { useAppDispatch, useAppSelector } from "../../src/store/hook";
 const NavBar = styled.ul`
   display: flex;
   align-items: center;
@@ -40,8 +39,8 @@ const Logout = styled.button`
 
 const MainNavigation = () => {
   const { data: session, status } = useSession();
-  const currentUser = useSelector((state) => state.user.value);
-  const dispatch = useDispatch();
+  const currentUser = useAppSelector((state) => state.user.value);
+  const dispatch = useAppDispatch();
 
   return (
     <NavBar>

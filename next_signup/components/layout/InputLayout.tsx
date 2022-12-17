@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { InputLayoutProps } from "../../types/interface";
 const Label = styled.label`
   display: inline-block;
   width: 10rem;
@@ -16,7 +17,7 @@ const LayoutContainer = styled.div`
   display: flex;
 `;
 
-const InputLayout = ({ children, label }) => {
+const InputLayout = ({ children, label }: InputLayoutProps) => {
   /* children이 배열의 경우 어떻게 처리하나? 은수님께 여쭤볼 것.
   지금 children을 map으로 처리한 이유는 map안 하면
   각 child마다 LayoutContainer가 부모태그로 생성되기 때문.
