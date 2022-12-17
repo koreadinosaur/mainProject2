@@ -14,7 +14,8 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { FormValues } from "../signup";
+import { RegisterUserFormValue } from "../../types/interface";
+
 const LoginContainer = styled.section`
   height: 60rem;
   width: 55rem;
@@ -102,7 +103,7 @@ const MyPage = ({ session }) => {
     },
   };
 
-  const onSubmit = handleSubmit(async (data: FormValues) => {
+  const onSubmit = handleSubmit(async (data: RegisterUserFormValue) => {
     const birth = data.dateOfBirth?.split("-");
     const updated = {
       dateOfBirth: { year: birth[0], month: birth[1], date: birth[2] },
