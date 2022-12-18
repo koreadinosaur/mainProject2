@@ -1,17 +1,11 @@
 import { useState } from "react";
 import { UseFormRegister, FieldValues } from "react-hook-form";
 import styled from "styled-components";
+import { RadioButtonProps } from "../../types/interface";
 
 const Input = styled.input`
   margin-left: 1rem;
 `;
-interface RadioButtonProps {
-  name: string;
-  user: string;
-  label: string;
-  value: string;
-  register: UseFormRegister<FieldValues>;
-}
 
 const RadioButton = ({
   value,
@@ -20,10 +14,10 @@ const RadioButton = ({
   register,
   label,
 }: RadioButtonProps) => {
-  const [genderChecked, setGenderChecked] = useState<string | null>();
+  const [genderChecked, setGenderChecked] = useState<boolean | null>(false);
 
   const handleClick = (e) => {
-    setGenderChecked("checked");
+    setGenderChecked(true);
   };
 
   return (
@@ -36,7 +30,7 @@ const RadioButton = ({
           name={name}
           value={value}
           onClick={handleClick}
-          genderChecked
+          {...(genderChecked ? { checked: true } : null)}
           {...(user === value ? { defaultChecked: true } : {})}
         ></Input>
       </label>
