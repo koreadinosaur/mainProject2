@@ -1,4 +1,4 @@
-import { ReactElement } from "react";
+import { ReactElement, ReactNode } from "react";
 
 interface RegisterUserFormValue {
   dateOfBirth: string;
@@ -14,8 +14,16 @@ interface RegisterUserFormValue {
   username: string;
   password: string;
 }
+interface RadioButtonProps {
+  name: string;
+  user: string;
+  label: string;
+  value: string;
+  register: UseFormRegister<FieldValues>;
+}
 type LayoutProps = {
-  children: ReactElement;
+  // children: ReactElement;
+  children: ReactNode;
 };
 interface BoardLayoutProps extends LayoutProps {}
 interface FooterLayoutProps extends LayoutProps {
@@ -31,4 +39,5 @@ export type {
   BoardLayoutProps,
   FooterLayoutProps,
   InputLayoutProps,
+  RadioButtonProps,
 };
