@@ -7,7 +7,16 @@ import Footer from "../../components/layout/Footer";
 import InputLayout from "../../components/layout/InputLayout";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
-import { Resolver, SubmitHandler, useForm } from "react-hook-form";
+import {
+  FieldError,
+  FieldErrors,
+  FieldErrorsImpl,
+  FieldValues,
+  Merge,
+  Resolver,
+  SubmitHandler,
+  useForm,
+} from "react-hook-form";
 import styled from "styled-components";
 import DropDown from "../../components/common/DropDown";
 import axios from "axios";
@@ -45,6 +54,7 @@ export type FormValues = {
   phone3: string;
   username: string;
   password: string;
+  erros?: string | FieldError | Merge<FieldError, FieldErrorsImpl<any>>;
 };
 
 const SignUp = ({ user, title }) => {
@@ -214,7 +224,7 @@ const SignUp = ({ user, title }) => {
             onClick={handleClick}
             errors={errors?.username}
           />
-          {errors.username && (
+          {errors?.username && (
             <ErrorMessage>{errors?.username?.message}</ErrorMessage>
           )}
         </InputLayout>

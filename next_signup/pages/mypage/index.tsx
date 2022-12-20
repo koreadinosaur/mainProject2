@@ -14,7 +14,7 @@ import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import { unstable_getServerSession } from "next-auth";
 import { authOptions } from "../api/auth/[...nextauth]";
-import { RegisterUserFormValue } from "../../types/interface";
+import { RegisterUserFormValue, UseFormProps } from "../../types/interface";
 
 const LoginContainer = styled.section`
   height: 60rem;
@@ -50,14 +50,17 @@ const MyPage = ({ session }) => {
     watch,
     formState: { errors },
     formState,
-  } = useForm();
+  } = useForm<UseFormProps>();
 
   const watchArray = ["username", "selectedEmailHost", "emailHost"];
   const watchFields = watch(watchArray);
-  const watchObject = {};
-  watchArray.forEach((item, index) => {
-    watchObject[item] = watchFields[index];
-  });
+
+  const watchObject = {
+    username: watchFields[0],
+    selectedEmailHost: watchFields[1],
+    emailHost: watchFields[2],
+  };
+
   useEffect(() => {
     const subscription = watch((value, { name, type }) => {
       if (value.selectedEmailHost !== "직접입력") {
@@ -67,7 +70,7 @@ const MyPage = ({ session }) => {
       }
     });
     return () => subscription.unsubscribe();
-  }, [watchFields]);
+  }, [watch]);
   /* useEffect(() => {
     async function getUser() {
       try {
